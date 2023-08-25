@@ -1,0 +1,82 @@
+@font-face {
+    font-family: boldFont;
+    src: url('times new roman bold.ttf');
+}
+body{
+    font-family: boldFont;
+}
+.container {
+    padding: 2.5% 20%;
+}
+
+/* Full-width inputs */
+input[type=text], input[type=password] {
+width: 100%;
+padding: 12px 20px;
+margin: 8px 0;
+display: inline-block;
+border: 1px solid #ccc;
+box-sizing: border-box;
+}
+
+/* Set a style for all buttons */
+button {
+background-color: #04AA6D;
+color: white;
+padding: 14px 20px;
+margin: 8px 0;
+border: none;
+cursor: pointer;
+width: 100%;
+}
+
+/* Add a hover effect for buttons */
+button:hover {
+opacity: 0.8;
+}
+
+/* The "Forgot password" text */
+span.psw {
+float: right;
+padding-top: 16px;
+}
+.logout {
+    border: none;
+    border-radius: 10px;
+    width: 100%;
+    padding: 15px 25px;
+    background-color: #7880ec;
+    padding: 14px 20px;
+    margin: 8px 0;
+    cursor: pointer;
+}
+input[type=submit] {
+    background-color: #04AA6D;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+input[type=submit]:hover {
+opacity: 0.8;
+}
+    .hidden {
+        display: none;
+    }
+    input[type=text], input[type=password], select {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        }
+/* Change styles for span and cancel button on extra small screens */
+@media screen and (max-width: 300px) {
+span.psw {
+    display: block;
+    float: none;
+}
+}
