@@ -1,0 +1,213 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receipt</title>
+    <link rel="stylesheet" href="{% static 'css/pdf.css' %}">
+    <script>
+        function printReceipt(){
+            var receiptWeb = document.getElementById('receipt-web');
+            var receipt = document.getElementById('receipt');
+            receiptWeb.style.display = 'none';
+            receipt.style.display = 'block';
+            
+            window.print();
+
+            receiptWeb.style.display = 'block';
+            receipt.style.display = 'none';
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js" ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script>
+        function savePDF(){
+            // [230, 180]
+            
+            var receipt = document.getElementById('content');
+            
+
+            html2pdf().set({
+              margin:       [1, 5, 0, 5],
+			  filename:     'Receipt_No_{{rInf.id}}.pdf',
+			  image:        { type: 'jpeg', quality: 0.98 },
+			  jsPDF:        { unit: 'ex', format: [230, 180], orientation: 'landscape', putOnlyUsedFonts: true , compress: true, encryption: {userPassword: '{{rInf.password}}', ownerPassword: '{{rInf.password}}', userPermissions: ["print", "modify", "copy"]}
+             }
+            }).from(receipt).save();
+
+
+        }
+        
+
+    </script>
+</head>
+<body>
+    {% if user.is_authenticated %}
+    <!-- THIS IS PRINT RECEIPT -->
+    <div class="receipt" id="receipt" style="display: none;">
+        <img  src="{% static 'img/template.jpeg' %}">
+        <div id="capture">
+        <div id="info" class="info">
+            <h1>{{rInf.id}}</h1>
+            <h1>{{rInf.time}}</h1>
+            <h1>{{rInf.valueDate}}</h1>
+        </div>
+        <div class="beneficiary" id="beneficiary">
+            <h1 class="byOrder">{{bInf.byOrder}}</h1>
+            <div class="beneBody">
+                <h1>{{bInf.receiverNo}}</h1>
+                <div>
+                    <h1>{{bInf.city}}<span class="country">{{bInf.country}}</span></h1>
+                </div>
+                <h1>{{bInf.nationality}}</h1>
+            </div>
+            <h1 class="senderInfo">{{sInf.sender}} - {{sInf.senderNo}}</h1>
+        </div>
+
+        <div class="sender" id="sender">
+            <div>
+                <h1 class="senderName">{{sInf.sender}}</h1>
+                <div class="senerBody">
+                    <h2>{{sInf.address}}</h2>
+                    <h2>{{sInf.senderNo}}</h2>
+                    <h2>{{sInf.idNo}}</h2>
+                </div>
+            </div>
+                <h2 class="lastChild">{{sInf.porpuse}}</h2>
+        </div>
+        <div class="payment" id="payment">
+                <h1>{{payAmt}}</h1>
+                <h2>{{rateAmt}}</h2>
+            <div class="p1">
+                <h2>{{chargeAmt}}</h2>
+                <h2>{{sendingAmt}}</h2>
+            </div>
+            <div class="p2">
+                <h2>{{totalAmt}}</h2>
+            </div>
+        </div>
+        </div>
+    </div>
+    <!-- THIS IS GENERATEPDF RECEIPT -->
+    <div class="receiptpdf" id="receiptpdf" style="display: none;">
+        <div id="content">
+        <img  src="{% static 'img/template.jpeg' %}">
+        <div id="infopdf" class="infopdf">
+            <h1>{{rInf.id}}</h1>
+            <h1>{{rInf.time}}</h1>
+            <h1>{{rInf.valueDate}}</h1>
+        </div>
+        <div class="beneficiarypdf" id="beneficiarypdf">
+            <h1 class="byOrderpdf">{{bInf.byOrder}}</h1>
+            <div class="beneBodypdf">
+                <h1>{{bInf.receiverNo}}</h1>
+                <div>
+                    <h1>{{bInf.city}}<span class="countrypdf">{{bInf.country}}</span></h1>
+                </div>
+                <h1>{{bInf.nationality}}</h1>
+            </div>
+            <h1 class="senderInfopdf">{{sInf.sender}} - {{sInf.senderNo}}</h1>
+        </div>
+
+        <div class="senderpdf" id="senderpdf">
+            <div>
+                <h1 class="senderNamepdf">{{sInf.sender}}</h1>
+                <div class="senerBodypdf">
+                    <h2>{{sInf.address}}</h2>
+                    <h2>{{sInf.senderNo}}</h2>
+                    <h2>{{sInf.idNo}}</h2>
+                </div>
+            </div>
+                <h2 class="lastChildpdf">{{sInf.porpuse}}</h2>
+        </div>
+        <div class="paymentpdf" id="paymentpdf">
+                <h1>{{payAmt}}</h1>
+                <h2>{{rateAmt}}</h2>
+            <div class="p1pdf">
+                <h2>{{chargeAmt}}</h2>
+                <h2>{{sendingAmt}}</h2>
+            </div>
+            <div class="p2pdf">
+                <h2>{{totalAmt}}</h2>
+            </div>
+        </div>
+        </div>
+        </div>
+    </div>
+    <!-- THIS IS THE SHOWING RECEIPT -->
+    <div class="receipt-web" id="receipt-web" style="display: block;">
+        <h1>Receipt</h1>
+        <div class="receipt-list" >
+            <h2>BENEFICIARY</h2>
+            <table>
+                <tr>
+                    <td>Beneficiary <span>{{bInf.byOrder}}</span></td>
+                </tr>
+                <tr>
+                    <td>Contact Number <span>{{bInf.receiverNo}}</span></td>
+                </tr>
+                <tr>
+                    <td>City <span>{{bInf.city}}</span></td>
+                </tr>
+                <tr>
+                    <td>Country <span>{{bInf.country}}</span></td>
+                </tr>
+                <tr>
+                    <td>Nationality <span>{{bInf.nationality}}</span></td>
+                </tr>
+                <tr>
+                    <td>By Order <span>{{bInf.byOrder}} - {{bInf.receiverNo}}</span></td>
+                </tr>
+            </table>
+            <table>
+                <h2>SENDER</h2>
+                <tr>
+                    <td>Sender <span>{{sInf.sender}}</span></td>
+                </tr>
+                <tr>
+                    <td>Address <span>{{sInf.address}}</span></td>
+                </tr>
+                <tr>
+                    <td>Contact Number <span>{{sInf.senderNo}}</span></td>
+                </tr>
+                <tr>
+                    <td>IDNO. <span>{{sInf.idNo}}</span></td>
+                </tr>
+                <tr>
+                    <td>Porpuse <span>{{sInf.porpuse}}</span></td>
+                </tr>
+            </table>
+            <table>
+                <h2>PAYMENT</h2>
+                <tr>
+                    <td>Payout Amt. USD <span>{{payAmt}}</span></td>
+                </tr>
+                <tr>
+                    <td>Rate <span>{{rateAmt}}</span></td>
+                </tr>
+                <tr>
+                    <td>charge <span>{{chargeAmt}}</span></td>
+                </tr>
+                <tr>
+                    <td>Sending Amt. DHS <span>{{sendingAmt}}</span></td>
+                </tr>
+                <tr>
+                    <td>Total Recd. DHS <span>{{totalAmt}}</span></td>
+                </tr>
+            </table>
+        </div>
+        <!-- <button class="print" onclick="printReceipt()">Print</button>
+        <button class="save" onclick="savePDF()">Save</button> -->
+        </div>
+        <button class="print" onclick="printReceipt()">Print</button>
+        <button class="save" onclick="savePDF()">Save</button>
+    {% else %}
+    <h1>Please login in order to use the app</h1>
+    <button><a href="/" style="text-decoration: none;color: black;">Login</a></button>
+    {% endif %}
+</body>
+</html>

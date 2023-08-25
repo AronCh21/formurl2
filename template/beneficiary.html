@@ -1,0 +1,221 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+        {% if benInfo %}
+        <form action="" method="POST">
+            {% csrf_token %}
+            <h1 style="text-align: center;">Beneficiary</h1>
+            <label for="ch-box">Check here if you want search throw database</label>
+            <input type="checkbox" id="ch-box" onclick="chBx()"><hr>
+            <div id="search-div" style="display: none;">
+                <label for="search">Search</label>
+                <input type="text" name="search" id="search">
+            </div>
+            <div id="create-div" style="display: block;">
+                <label for="receiver">Receiver</label>
+                <input type="text" name="receiver" value="{{benInfo.byOrder}}">
+
+                <label for="receiverNo">Contact NO.</label>
+                <input type="text" onkeypress="return /[0-9]/i.test(event.key)" name="receiverNo" value="{{benInfo.receiverNo}}">
+
+                <label for="country">Country</label>
+                <select id="country" name="country"  onchange="setCapital()">
+                    <option value="{{benInfo.country}}">{{benInfo.country}}</option>
+                    <option value="Albania">Albania</option>
+                    <option value="Australia">Australia</option>
+                    <option value="Canada">Canada</option>
+                    <option value="India">India</option>
+                    <option value="Iran">Iran</option>
+                    <option value="Kuwait">Kuwait</option>
+                    <option value="Netherlands">Netherlands</option>
+                    <option value="Oman">Oman</option>
+                    <option value="Pakistan">Pakistan</option>
+                    <option value="Qatar">Qatar</option>
+                    <option value="Turkey">Turkey</option>
+                    <option value="United Arab Emirates">United Arab Emirates</option>
+                    <option value="United Kingdom">United Kingdom</option>
+                    <option value="United States">United States</option>
+                    <option value="Not-In-The-List">Not In The List</option>
+                </select>
+
+                <div class="hidden" id="hidden">
+                    <label for="country-2">Write Country</label>
+                    <input type="text" name="country-2">
+
+                    <label for="city-2">Write City</label>
+                    <input type="text" name="city-2">
+                </div>
+
+                <div id="citySelect">
+                    <label for="city">City</label>
+                    <select name="city" id="selectedCity">
+                        <option value="{{benInfo.city}}">{{benInfo.city}}</option>
+                    </select>
+                </div>
+                <label for="nationality">Nationality</label>
+                <input type="text" name="nationality" value="{{benInfo.nationality}}">
+            </div>
+            <input type="submit" value="Submit" id="btn" name="btn">
+        </form>
+        {% else %}
+        <form action="" method="POST">
+            {% csrf_token %}
+            <h1 style="text-align: center;">Beneficiary</h1>
+            <label for="ch-box">Check here if you want search throw database</label>
+            <input type="checkbox" id="ch-box" onclick="chBx()"><hr>
+            <div id="search-div" style="display: none;">
+                <label for="search">Search</label>
+                <input type="text" name="search" id="search">
+            </div>
+            <div id="create-div" style="display: block;">
+                <label for="receiver">Receiver</label>
+                <input type="text" name="receiver" >
+
+                <label for="receiverNo">Contact NO.</label>
+                <input type="text" onkeypress="return /[0-9]/i.test(event.key)" name="receiverNo">
+
+                <label for="country">Country</label>
+                <select id="country" name="country" onchange="setCapital()">
+                    <option value="--SELECT--">--SELECT--</option>
+                    <option value="Albania">Albania</option>
+                    <option value="Australia">Australia</option>
+                    <option value="Canada">Canada</option>
+                    <option value="India">India</option>
+                    <option value="Iran">Iran</option>
+                    <option value="Kuwait">Kuwait</option>
+                    <option value="Netherlands">Netherlands</option>
+                    <option value="Oman">Oman</option>
+                    <option value="Pakistan">Pakistan</option>
+                    <option value="Qatar">Qatar</option>
+                    <option value="Turkey">Turkey</option>
+                    <option value="United Arab Emirates">United Arab Emirates</option>
+                    <option value="United Kingdom">United Kingdom</option>
+                    <option value="United States">United States</option>
+                    <option value="Not-In-The-List">Not In The List</option>
+                </select>
+
+                <div class="hidden" id="hidden">
+                    <label for="country-2">Write Country</label>
+                    <input type="text" name="country-2">
+
+                    <label for="city-2">Write City</label>
+                    <input type="text" name="city-2">
+                </div>
+
+                <div id="citySelect">
+                    <label for="city">City</label>
+                    <select name="city" id="selectedCity">
+                        <option value="--SELECT--">--SELECT--</option>
+                    </select>
+                </div>
+                <label for="nationality">Nationality</label>
+                <input type="text" name="nationality">
+            </div>
+            <input type="submit" value="Submit" id="btn" name="btn">
+            {% endif %}
+        </form>
+    </div>
+    <!-- SCRIPTS -->
+    <script src=  
+    "https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js">  
+        </script>  
+        
+        <script src=  
+    "https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js">  
+        </script>  
+        
+        <link href=  
+    "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/ui-lightness/jquery-ui.css"
+            rel="stylesheet" type="text/css" />
+            <script>
+                function setCapital(){
+                    var country = document.getElementById("country").value;
+                    if(country != 'Not-In-The-List') {
+                        // Setting display
+                        var selectDiv = document.getElementById('citySelect');
+                        selectDiv.style.display = 'block';
+                        document.getElementById('hidden').style.display = 'none';
+                        // Checking For The Country Select
+                        var select = document.getElementById('selectedCity');
+                        let cities;
+                        if(country == 'Albania') {
+                            cities = ['Tirana'];
+                        } else if(country == 'Turkey') {
+                            cities = ['Adana', 'Ankara', 'Antalya', 'Bursa', 'Istanbul', 'İzmir', 'Trabzon'];
+                        } else if(country == 'Australia') {
+                            cities = ['Sydney', 'Canberra', 'Melbourne'];
+                        } else if(country == 'Canada') {
+                            cities = ['Ottawa', 'Toronto', 'Vancouver'];
+                        } else if(country == 'India') {
+                            cities = ['New Delhi', 'Mumbai', 'Goa'];
+                        } else if(country == 'Iran') {
+                            cities = ['Tehran', 'Isfahan', 'Shiraz', 'Khozestan'];
+                        } else if(country == 'Kuwait') {
+                            cities = ['Kuwait City'];
+                        } else if(country == 'Netherlands') {
+                            cities = ['Amsterdam', 'Rotterdam'];
+                        } else if(country == 'Oman') {
+                            cities = ['Muscat'];
+                        } else if(country == 'Pakistan') {
+                            cities = ['Islamabad', 'Karachi', 'Lahore', 'Faisalabad'];
+                        } else if(country == 'Qatar') {
+                            cities = ['Doha'];
+                        } else if(country == 'United Arab Emirates') {
+                            cities = ['Abu Dhabi', 'Dubai'];
+                        } else if(country == 'United Kingdom') {
+                            cities = ['London', 'Birmingham', 'Liverpool', 'Manchester', 'Leeds'];
+                        } else if(country == 'United States') {
+                            cities = ['New York', 'Los Angeles', 'Chicago', 'Washington, D.C'];
+                        } else {
+                            cities = ['']
+                        }
+                        // Deleting all options
+                        let citiesLen = document.getElementById("selectedCity").length - 1;
+                        for(let i = citiesLen; i >= 1; i--){
+                            select.remove(i);
+                        }
+                        cities.sort();
+                        //Creating New Option(s)
+                        for(let x in cities){    
+                            let newOption = new Option(cities[x], cities[x]);
+                            select.add(newOption, undefined);
+                        }
+                    } else {
+                        var selectDiv = document.getElementById('citySelect');
+                        selectDiv.style.display = 'none';
+                        document.getElementById('hidden').style.display = 'block';
+                    
+                    }
+                }   
+                function chBx() {
+                    var checkBox = document.getElementById('ch-box');
+                    var searchDiv = document.getElementById('search-div');
+                    var createDiv = document.getElementById('create-div');
+                    var btn = document.getElementById('btn');
+                    if(checkBox.checked == true) {
+                        checkBox.value = 'search';
+                        searchDiv.style.display = 'block';
+                        createDiv.style.display = 'none';
+                        btn.value = 'Search';
+                    }else {
+                        checkBox.value = 'create';
+                        searchDiv.style.display = 'none';
+                        createDiv.style.display = 'block';
+                        btn.value = 'Submit';
+                    }
+                }
+            </script>
+            <script>
+                $( function() {
+                  var availableReceivers = [
+                      {% for allBs in allB %}
+                          "{{allBs.byOrder}}",
+                      {% endfor %}
+                  ];
+                  $( "#search" ).autocomplete({
+                    source: availableReceivers
+                  });
+                } );
+                </script>
+{% endblock %}

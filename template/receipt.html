@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+        <form action="" method="POST">
+        {% csrf_token %}
+            <h1 style="text-align: center;">Payment</h1>
+            <label for="pay-out">Payout Amt. USD</label><br>
+            <input type="text" onkeypress="return isNumberKey(event)" name="pay-out"><br>
+
+            <label for="rate">Rate</label><br>
+            <input type="text" onkeypress="return isNumberKey(event)" name="rate" value="3.67500000"><br>
+
+            <label for="charge">Charge</label><br>
+            <input type="text" onkeypress="return isNumberKey(event)" name="charge" id="charge-rate" value="0">
+
+            <hr>
+            <label for="psw">Set Password</label><br>
+            <input type="password" name="psw"><br>
+            
+
+            <input type="submit">
+        </form>
+    </div>
+    <script>
+        function chargeCheck(){
+            var checkBox = document.getElementById('charge-check');
+            var charge = document.getElementById('charge-rate');
+
+            if (checkBox.checked == true){
+                charge.disabled = false;
+                charge.required = true;
+            } else {
+                charge.disabled = true;
+                charge.required = false;
+            }
+        }
+    </script>
+    <SCRIPT language=Javascript>
+        <!--
+        function isNumberKey(evt)
+        {
+           var charCode = (evt.which) ? evt.which : evt.keyCode;
+           if (charCode != 46 && charCode > 31 
+             && (charCode < 48 || charCode > 57))
+              return false;
+ 
+           return true;
+        }
+        //-->
+     </SCRIPT>
+
+{% endblock %}

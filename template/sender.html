@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+     
+        
+        {% if senInf %}
+        <form action="" method="POST">
+            {% csrf_token %}
+            <h1 style="text-align: center;">Sender</h1>
+            <label for="ch-box">Check here if you want search throw database</label>
+            <input type="checkbox" id="ch-box" onclick="chBx()"><hr>
+            <div id="search-div" style="display: none;">
+                <label for="search">Search</label>
+                <input type="text" name="search" id="search">
+            </div>
+            <div id="create-div" style="display: block;">
+            <label for="sender">Sender</label><br>
+            <input type="text" name="sender" value="{{senInf.sender}}"><br>
+
+            <label for="address">Address</label><br>
+            <input type="text" name="address" value="{{senInf.address}}"><br>
+
+            <label for="tel2">Contact NO.</label><br>
+            <input type="text" name="tel2" value="{{senInf.senderNo}}"><br>
+            
+            <label for="id-no">ID NO.</label><br>
+            <input type="text" name="id-no" value="{{senInf.idNo}}"><br>
+
+            <label for="porpuse">Porpuse</label><br>
+            <input type="text" name="porpuse" value="{{senInf.porpuse}}"><br>
+            </div>
+
+
+            <input type="submit" value="Submit" id="btn" name="btn">
+        </form>
+        {% else %}
+        <form action="" method="POST">
+            {% csrf_token %}
+            <h1 style="text-align: center;">Sender</h1>
+            <label for="ch-box">Check here if you want search throw database</label>
+            <input type="checkbox" id="ch-box" onclick="chBx()"><hr>
+            <div id="search-div" style="display: none;">
+                <label for="search">Search</label>
+                <input type="text" name="search" id="search">
+            </div>
+            <div id="create-div" style="display: block;">
+            <label for="sender">Sender</label><br>
+            <input type="text" name="sender" ><br>
+
+            <label for="address">Address</label><br>
+            <input type="text" name="address" cols="40" rows="2" ><br>
+
+            <label for="tel2">Contact NO.</label><br>
+            <input type="text" onkeypress="return /[0-9]/i.test(event.key)" name="tel2" ><br>
+            
+            <label for="id-no">ID NO.</label><br>
+            <input type="text" name="id-no" ><br>
+
+            <label for="porpuse">Porpuse</label><br>
+            <input type="text" name="porpuse" ><br>
+            </div>
+
+
+            <input type="submit" value="Submit" id="btn" name="btn">
+        </form>
+        {% endif %}
+    </div>
+    
+    <script src=  
+"https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js">  
+    </script>  
+    
+    <script src=  
+"https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js">  
+    </script>  
+    
+    <link href=  
+"http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/ui-lightness/jquery-ui.css"
+        rel="stylesheet" type="text/css" />
+
+        <script>
+            function chBx() {
+            var checkBox = document.getElementById('ch-box');
+            var searchDiv = document.getElementById('search-div');
+            var createDiv = document.getElementById('create-div');
+            var btn = document.getElementById('btn');
+            if(checkBox.checked == true) {
+                checkBox.value = 'search';
+                searchDiv.style.display = 'block';
+                createDiv.style.display = 'none';
+                btn.value = 'Search';
+            }else {
+                checkBox.value = 'create';
+                searchDiv.style.display = 'none';
+                createDiv.style.display = 'block';
+                btn.value = 'Submit';
+            }
+        }
+    </script>
+    <script>
+        $( function() {
+          var availableSender = [
+              {% for allS in allSs %}
+                  "{{allS.sender}}",
+              {% endfor %}
+          ];
+          $( "#search" ).autocomplete({
+            source: availableSender
+          });
+        } );
+        </script>
+{% endblock %}
